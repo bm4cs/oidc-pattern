@@ -44,8 +44,22 @@ export const actionCreators = {
     requestWeatherForecasts: (startDateIndex: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
         // Only load data if it's something we don't already have (and are not already loading)
         const appState = getState();
+
+        var token: any = ""
+
+        if (appState && appState.authentication && appState.authentication.keycloak) {
+            token = appState.authentication.keycloak.token;
+        }
+
+         console.log(token);
+        // debugger;
+
         if (appState && appState.weatherForecasts && startDateIndex !== appState.weatherForecasts.startDateIndex) {
-            fetch(`weatherforecast`)
+            fetch(`weatherforecast`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
                 .then(response => response.json() as Promise<WeatherForecast[]>)
                 .then(data => {
                     dispatch({ type: 'RECEIVE_WEATHER_FORECASTS', startDateIndex: startDateIndex, forecasts: data });
