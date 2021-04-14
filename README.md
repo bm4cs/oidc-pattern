@@ -4,11 +4,12 @@ To abstract the application away from concerns such as kerberos/ldap, are fronti
 
 # Setup
 
+1. `dotnet restore` in project root
 1. Spin up keycloak using provided `docker-compose.yml`.
-2. Create a _realm_
-3. Create a _client_, with a client protocol of openid-connect, access types of _public_.
-4. Still on the _client_, jump over to the _Installation_ tab, and set the format option to _Keycloak OIDC JSON_. Save the JSON to the `public` directory in the SPA tree.
-5.
+1. Create a _realm_
+1. Create a _client_, with a client protocol of openid-connect, access types of _public_.
+1. Still on the _client_, jump over to the _Installation_ tab, and set the format option to _Keycloak OIDC JSON_. Save the JSON to the `public` directory in the SPA tree.
+1.
 
 Keycloak Installation JSON:
 
@@ -26,7 +27,6 @@ Keycloak Installation JSON:
 # Usage
 
 The reference SPA application, uses the JavaScript keycloak adapter.
-
 
 # Decoded JWT token
 
@@ -56,22 +56,13 @@ The reference SPA application, uses the JavaScript keycloak adapter.
   "nonce": "5dc03a7c-0432-417b-8e10-397d4fd66ba4",
   "session_state": "f268478d-ddc4-4cad-8033-d9f9c85b9f9d",
   "acr": "1",
-  "allowed-origins": [
-    "https://localhost:5001"
-  ],
+  "allowed-origins": ["https://localhost:5001"],
   "realm_access": {
-    "roles": [
-      "offline_access",
-      "uma_authorization"
-    ]
+    "roles": ["offline_access", "uma_authorization"]
   },
   "resource_access": {
     "account": {
-      "roles": [
-        "manage-account",
-        "manage-account-links",
-        "view-profile"
-      ]
+      "roles": ["manage-account", "manage-account-links", "view-profile"]
     }
   },
   "scope": "openid profile email",
