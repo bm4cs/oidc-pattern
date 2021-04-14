@@ -9,6 +9,6 @@ RUN dotnet publish "todo-frontend-spa.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5000
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "todo-frontend-spa.dll"]
