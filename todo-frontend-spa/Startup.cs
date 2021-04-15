@@ -1,3 +1,4 @@
+using System.IO;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -23,6 +25,8 @@ namespace todo_frontend_spa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+            
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -30,7 +34,7 @@ namespace todo_frontend_spa
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -87,7 +91,7 @@ namespace todo_frontend_spa
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "ClientApp");
 
                 if (env.IsDevelopment())
                 {
@@ -95,7 +99,7 @@ namespace todo_frontend_spa
                 }
             });
         }
-        
+
         // public class ClaimsTransformer : IClaimsTransformation
         // {
         //     public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)

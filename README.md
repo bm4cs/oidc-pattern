@@ -86,6 +86,34 @@ RSASHA256(
 
 # Troubleshooting
 
+## IDX20803: Unable to obtain configuration
+
+When the dotnet backend attempts to valid the token, attempts to query the `openid-configuration` document from the realm.
+
+In a containerised environment, this must be routable from the dotnet backend container to the keycloak container.
+
+This endpoint is defined in the frontend application in `public/keycloak.json` (originally downloaded from the install tab on the keycloak client).
+
+To get around this, configure the endpoint as the container name, `oidc-pattern-keycloak`, which docker will make addressable from the backend container to the keycloak container.
+
+```
+System.InvalidOperationException: IDX20803: Unable to obtain configuration from: 'http://localhost:8080/auth/realms/demo-realm/.well-known/openid-configuration'.
+ ---> Microsoft.IdentityModel.Json.JsonReaderException: Unexpected character encountered while parsing value: <. Path '', line 0, position 0.
+   at Microsoft.IdentityModel.Json.JsonTextReader.ParseValue()
+   at Microsoft.IdentityModel.Json.JsonReader.ReadAndMoveToContent()
+   at Microsoft.IdentityModel.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Microsoft.IdentityModel.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Microsoft.IdentityModel.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Microsoft.IdentityModel.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)
+   at Microsoft.IdentityModel.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Microsoft.IdentityModel.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfigurationRetriever.GetAsync(String address, IDocumentRetriever retriever, CancellationToken cancel)
+   at Microsoft.IdentityModel.Protocols.ConfigurationManager`1.GetConfigurationAsync(CancellationToken cancel)
+   --- End of inner exception stack trace ---
+   at Microsoft.IdentityModel.Protocols.ConfigurationManager`1.GetConfigurationAsync(CancellationToken cancel)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleAuthenticateAsync()
+```
+
 ## Error: ENOSPC: System limit for number of file watchers reached
 
 Open this kernel throttle up:

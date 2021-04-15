@@ -441,7 +441,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "defaultRoles": [
         "view-profile",
         "manage-account"
@@ -488,7 +488,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [
         "/realms/demo-realm/account/*"
       ],
@@ -541,7 +541,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -580,7 +580,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -614,18 +614,18 @@
     {
       "id": "30778487-cc65-447e-9017-815cdd1eed0a",
       "clientId": "react-client",
-      "rootUrl": "https://localhost:5001/",
-      "adminUrl": "https://localhost:5001/",
+      "rootUrl": "http://localhost:5000/",
+      "adminUrl": "http://localhost:5000/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [
-        "https://localhost:5001/*"
+        "http://localhost:5000/*"
       ],
       "webOrigins": [
-        "https://localhost:5001"
+        "http://localhost:5000"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -680,7 +680,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -721,7 +721,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "password",
       "redirectUris": [
         "/admin/demo-realm/console/*"
       ],

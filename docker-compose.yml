@@ -2,6 +2,7 @@ version: "3"
 
 services:
   keycloak:
+    container_name: oidc-pattern-keycloak
     image: quay.io/keycloak/keycloak:latest
     volumes:
       - ./realm.json:/tmp/realm.json
@@ -9,17 +10,27 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
       KEYCLOAK_IMPORT: /tmp/realm.json
+      NO_PROXY: 127.0.0.1, localhost
     ports:
       - 8080:8080
+    networks:
+      - oidc-pattern-net
 
   frontend:
     build: ./todo-frontend-spa
     image: oidc-pattern-frontend
     container_name: oidc-pattern-frontend
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      ASPNETCORE_ENVIRONMENT: Test
+      NO_PROXY: 127.0.0.1, localhost
     restart: on-failure
     ports:
-      - 5000:5000
+      - 5000:80
+    networks:
+      - oidc-pattern-net
     depends_on:
       - keycloak
+
+networks:
+  oidc-pattern-net:
+    driver: bridge
