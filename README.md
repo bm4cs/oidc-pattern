@@ -88,17 +88,21 @@ RSASHA256(
 
 ## IDX20803: Unable to obtain configuration
 
-When the dotnet backend attempts to valid the token, attempts to query the `openid-configuration` document from the realm.
+When the dotnet backend attempts to valid the token, the JwtBearer middleware will try to query `http://keycloak:8080/auth/realms/demo-realm/.well-known/openid-configuration` to obtain oidc metadata about the realm.
 
-In a containerised environment, this must be routable from the dotnet backend container to the keycloak container.
+In a containerised environment, this must be routable from the dotnet _backend container_ to the _keycloak container_.
 
-This endpoint is defined in the frontend application in `public/keycloak.json` (originally downloaded from the install tab on the keycloak client).
+For for SPA frontend, this endpoint is defined in the frontend application in `public/keycloak.json` (originally downloaded from the install tab on the keycloak client).
 
 To get around this:
 
 1. Configure the keycloak endpoint in `public/keycloak.json`, as the container name `oidc-pattern-keycloak`, which docker will make addressable from the backend container to the keycloak container
 2. Add `127.0.0.1 oidc-pattern-keycloak` to `/etc/hosts`
-3. Ensure that `oidc-pattern-keycloak` is added to `NO_PROXY` setting for your browser of choice
+
+Finally to get around working with the corporate proxy server, to ensure it does not run these requests through the proxy:
+
+1. Check that `oidc-pattern-keycloak` is added to `NO_PROXY` setting for your browser of choice
+2. The `BackchannelHttpHandler` has been configure to explicitly not use a proxy server on the `JwtBearer` middleware. Refer to `Startup.cs` for more details.
 
 ```
 System.InvalidOperationException: IDX20803: Unable to obtain configuration from: 'http://localhost:8080/auth/realms/demo-realm/.well-known/openid-configuration'.

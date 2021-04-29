@@ -1,3 +1,5 @@
+using System.Net.Http;
+using System.Buffers;
 using System.IO;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,12 +43,17 @@ namespace todo_frontend_spa
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = "http://localhost:8080/auth/realms/demo-realm";
+                options.Authority = "http://oidc-pattern-keycloak:8080/auth/realms/demo-realm";
                 options.Audience = "account";
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     RoleClaimType = ClaimTypes.Role
+                };
+
+                options.BackchannelHttpHandler = new HttpClientHandler
+                {
+                    UseProxy = false
                 };
 
                 options.Events = new JwtBearerEvents

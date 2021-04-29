@@ -22,7 +22,7 @@ services:
     container_name: oidc-pattern-frontend
     environment:
       ASPNETCORE_ENVIRONMENT: Test
-      NO_PROXY: 127.0.0.1, localhost
+      NO_PROXY: 127.0.0.1, localhost, oidc-pattern-keycloak, keycloak
     restart: on-failure
     ports:
       - 5000:80
