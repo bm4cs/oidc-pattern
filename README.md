@@ -94,7 +94,11 @@ In a containerised environment, this must be routable from the dotnet backend co
 
 This endpoint is defined in the frontend application in `public/keycloak.json` (originally downloaded from the install tab on the keycloak client).
 
-To get around this, configure the endpoint as the container name, `oidc-pattern-keycloak`, which docker will make addressable from the backend container to the keycloak container.
+To get around this:
+
+1. Configure the keycloak endpoint in `public/keycloak.json`, as the container name `oidc-pattern-keycloak`, which docker will make addressable from the backend container to the keycloak container
+2. Add `127.0.0.1 oidc-pattern-keycloak` to `/etc/hosts`
+3. Ensure that `oidc-pattern-keycloak` is added to `NO_PROXY` setting for your browser of choice
 
 ```
 System.InvalidOperationException: IDX20803: Unable to obtain configuration from: 'http://localhost:8080/auth/realms/demo-realm/.well-known/openid-configuration'.
@@ -120,6 +124,13 @@ Open this kernel throttle up:
 
 ```
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
+## Manual docker build
+
+```
+cd todo-frontend-spa
+docker build --no-cache --progress=plain -t oidc-pattern-frontend .
 ```
 
 # Resources
