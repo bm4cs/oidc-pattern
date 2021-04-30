@@ -1,34 +1,17 @@
-A reference pattern, for authenticating a SPA frontend, and its associated backend.
+A reference pattern, for authenticating a SPA frontend and propagating it access token to the backend.
 
 To abstract the application away from concerns such as kerberos/ldap, are fronting these protocols with Open ID Connection (OIDC) using Keycloak.
 
+The reference SPA application, uses the JavaScript keycloak adapter, using the official npm package.
+
 # Setup
 
-1. `dotnet restore` in project root
-1. Spin up keycloak using provided `docker-compose.yml`.
-1. Create a _realm_
-1. Create a _client_, with a client protocol of openid-connect, access types of _public_.
-1. Still on the _client_, jump over to the _Installation_ tab, and set the format option to _Keycloak OIDC JSON_. Save the JSON to the `public` directory in the SPA tree.
-1.
+1. `docker-compose up`
+2. Wait a few minutes (keycloak is java)
+3. Add `127.0.0.1 oidc-pattern-keycloak` to `/etc/hosts`
+4. If working with corporate proxy server, ensure `oidc-pattern-keycloak` is added to `NO_PROXY` setting for your browser of choice
 
-Keycloak Installation JSON:
-
-```json
-{
-  "realm": "demo-realm",
-  "auth-server-url": "http://localhost:8080/auth/",
-  "ssl-required": "external",
-  "resource": "react-client",
-  "public-client": true,
-  "confidential-port": 0
-}
-```
-
-# Usage
-
-The reference SPA application, uses the JavaScript keycloak adapter.
-
-# Decoded JWT token
+# Example decoded JWT token
 
 ## Header
 
@@ -140,12 +123,28 @@ docker build --no-cache --progress=plain -t oidc-pattern-frontend .
 # Resources
 
 - [keycloak javascript adapter](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter)
--
 
 # Noteworthy
+
+## OIDC modes
 
 The _access type_ of the OIDC client supports 3 modes:
 
 - `Bearer-only` – this is for services that rely solely on the bearer token included in the request and never initiate login on their own. Used for securing the back-end.
 - `Confidential` – clients of this type need to provide a secret in order to initiate the login process.
 - `Public` – since we have no real way of hiding the secret in a JS-based browser app, this is what we need to stick with.
+
+## Keycloak SPA configuration
+
+Keycloak Installation JSON. This is code generated from the keycloak client, using the installation tab.
+
+```json
+{
+  "realm": "demo-realm",
+  "auth-server-url": "http://oidc-pattern-keycloak:8080/auth/",
+  "ssl-required": "external",
+  "resource": "react-client",
+  "public-client": true,
+  "confidential-port": 0
+}
+```
